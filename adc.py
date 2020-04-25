@@ -41,6 +41,10 @@ class Fenetre():
         self.dst_adf.set("000")
         self.crs_adf = StringVar()
         self.crs_adf.set("000")
+        self.com1_inc = StringVar()
+        self.com1_inc.set("00")
+        self.com1_dec = StringVar()
+        self.com1_dec.set("118")
 
 
 
@@ -189,6 +193,9 @@ class Fenetre():
         tab3.columnconfigure((1,10), weight=1)
         tab3.rowconfigure((0,1,2,3,4,5,6,7,8,9,10), weight=1)
 
+
+
+#  NAV 1
         Label(tab3,text="Nav 1: ").grid(column=0, row=1,sticky='w')
         self.nav1_pwr = Button(tab3,text="PWR",command=self.nav1_but_pwr)
         self.nav1_pwr.grid(column=2,row=1,padx=5)
@@ -207,7 +214,10 @@ class Fenetre():
         nav1_crs.grid(column=11,row=1)
         nav1_lab_crs = Label(tab3,text="Course")
         nav1_lab_crs.grid(column=12, row=1,padx=5)
+    
 
+
+# NAV 2
         Label(tab3,text="Nav 2: ").grid(column=0, row=2,sticky='w')
         self.nav2_pwr = Button(tab3,text="PWR",command=self.nav2_but_pwr)
         self.nav2_pwr.grid(column=2,row=2,padx=5)
@@ -227,10 +237,12 @@ class Fenetre():
         nav2_lab_crs = Label(tab3,text="Course")
         nav2_lab_crs.grid(column=12, row=2,padx=5)
 
+
+# ADF
         Label(tab3,text="Adf: ").grid(column=0,row=3,sticky='w')
         self.adf_pwr = Button(tab3,text="PWR",command=self.adf_but_pwr)
         self.adf_pwr.grid(column=2,row=3,padx=5)
-        Label(tab3,text="Freq;").grid(column=3,row=3,padx=10)
+        Label(tab3,text="Freq:").grid(column=3,row=3,padx=10)
         adf_freq_spin = Spinbox(tab3,from_=200, to=450,width=3,textvariable=self.adf_freq)
         adf_freq_spin.grid(column=4,row=3)
         self.adf_set = Button(tab3,text="SET",command=self.adf_but_set)
@@ -241,6 +253,22 @@ class Fenetre():
         adf_crs = Label(tab3,bd=4,width=3,relief="ridge",textvariable = self.crs_adf)
         adf_crs.grid(column=11,row=3)
         Label(tab3,text="Course").grid(column=12,row=3,padx=5)
+
+
+
+# COM 1
+        Label(tab3,text="Com 1: ").grid(column=0,row=4, sticky='w')
+        self.com1_pwr = Button(tab3,text="PWR", command=self.com1_but_pwr)
+        self.com1_pwr.grid(column=2,row=4,padx=5)
+        Label(tab3,text="Freq:").grid(column=3,row=4,padx=10)
+        com1_freq_dec = Spinbox(tab3,from_=108, to=137,width=3,textvariable=self.com1_dec)
+        com1_freq_dec.grid(column=4,row=4)
+        com1_freq_inc = Spinbox(tab3,from_=00,to=95,increment=5,width=2,textvariable=self.com1_inc)
+        com1_freq_inc.grid(column=5,row=4)
+        self.com1_set = Button(tab3,text="Set",command=self.com1_but_set)
+        self.com1_set.grid(column=6,row=4,padx=10)
+        self.com1_audio = Button(tab3,text="AUDIO",command=self.com1_but_audio)
+        self.com1_audio.grid(column=7,row=4,padx=10)
 
         
 
@@ -508,6 +536,16 @@ class Fenetre():
     def adf_but_set(self):
         print("adf freq set !")
         self.iocp.sendData("611",self.adf_freq.get())
+
+    def com1_but_pwr(self):
+        print("Com1 pwr")
+
+
+    def com1_but_set(self):
+        print("Com1 set")
+
+    def com1_but_audio(self):
+        print("Audio on/off")
 
 
 
