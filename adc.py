@@ -506,7 +506,7 @@ class Fenetre():
             pass
 
     def adf_but_set(self):
-        print("adf freq set")
+        print("adf freq set !")
         self.iocp.sendData("611",self.adf_freq.get())
 
 
