@@ -28,15 +28,15 @@ class Fenetre():
         self.obs_nav1 =StringVar()
         self.obs_nav2 = StringVar()
         self.nav1_dec = StringVar()
-        self.nav1_dec.set("111")
+        self.nav1_dec.set("000")
         self.nav1_inc = StringVar()
-        self.nav1_inc.set("10")
+        self.nav1_inc.set("00")
         self.nav2_dec = StringVar()
-        self.nav2_dec.set("111")
+        self.nav2_dec.set("000")
         self.nav2_inc = StringVar()
-        self.nav2_inc.set("10")
+        self.nav2_inc.set("00")
         self.adf_freq = StringVar()
-        self.adf_freq.set("200")
+        self.adf_freq.set("000")
         self.dst_adf = StringVar()
         self.dst_adf.set("000")
         self.crs_adf = StringVar()
@@ -44,7 +44,7 @@ class Fenetre():
         self.com1_inc = StringVar()
         self.com1_inc.set("00")
         self.com1_dec = StringVar()
-        self.com1_dec.set("118")
+        self.com1_dec.set("000")
 
 
 
@@ -238,7 +238,7 @@ class Fenetre():
         nav2_lab_crs.grid(column=12, row=2,padx=5)
 
 
-# ADF
+# ADF 1
         Label(tab3,text="Adf: ").grid(column=0,row=3,sticky='w')
         self.adf_pwr = Button(tab3,text="PWR",command=self.adf_but_pwr)
         self.adf_pwr.grid(column=2,row=3,padx=5)
@@ -375,8 +375,8 @@ class Fenetre():
                 self.hydrau_on.config(bg="GREEN")
                 self.hydrau_off.config(bg="WHITE")
             else:
-                self.hud_on.config(bg="WHITE")
-                self.hud_off.config(bg="RED")
+                self.hydrau_on.config(bg="WHITE")
+                self.hydrau_off.config(bg="RED")
 
             # instruments
             self.alti.set(str(int(int(self.dataDict["510"])/10000)))
@@ -407,6 +407,17 @@ class Fenetre():
                 self.adf_pwr.config(bg="GREEN")
             else:
                 self.adf_pwr.config(bg="WHITE")
+
+            if self.dataDict["614"] == "1":
+                self.com1_pwr.config(bg="GREEN")
+            else:
+                self.com1_pwr.config(bg="WHITE")
+
+            if self.dataDict["617"] == "1":
+                self.com1_audio.config(bg="GREEN")
+            else:
+                self.com1_audio.config(bg="WHITE")
+
         except:
             print("problem with a var, is it declared in both side ?")
 
@@ -531,7 +542,7 @@ class Fenetre():
             else:
                 self.iocp.sendData("610","2")
         except:
-            pass
+            print("Unable to send adf pwr")
 
     def adf_but_set(self):
         print("adf freq set !")
@@ -539,13 +550,29 @@ class Fenetre():
 
     def com1_but_pwr(self):
         print("Com1 pwr")
+        try:
+            if self.dataDict["614"] == "1":
+                self.iocp.sendData("614","0")
+            else:
+                self.iocp.sendData("614","1")
+        except:
+            print("Unable to send com1 pwr")
 
 
     def com1_but_set(self):
         print("Com1 set")
+        self.iocp.sendData("615", self.com1_dec.get())
+        self.iocp.sendData("616", self.com1_inc.get())
 
     def com1_but_audio(self):
         print("Audio on/off")
+        try:
+            if self.dataDict["617"] == "1":
+                self.iocp.sendData("617","0")
+            else:
+                self.iocp.sendData("617","1")
+        except:
+            print("Unable to send audio com1")
 
 
 
